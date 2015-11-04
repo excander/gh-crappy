@@ -1,6 +1,10 @@
  {% extends "parse/base.html" %}
 
     {% block content %}
-    Parse form
+    <h1>Let's try:</h1>
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Start</button>
+        </form>
                 
     {% endblock content %}
