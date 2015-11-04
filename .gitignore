@@ -3,3 +3,4 @@ __pycache__
 myvenv
 .DS_Store
 info.txt
+db.sqlite3
