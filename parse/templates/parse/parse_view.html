@@ -1,5 +1,6 @@
- {% extends "parse/base.html" %}
 
+ {% extends "parse/base.html" %}
+	{% load static %}
     {% block content %}
    	<h1>Let's try:</h1>
         <form method="POST" class="post-form">{% csrf_token %}
@@ -7,6 +8,7 @@
             <button type="submit">Start</button>
         </form>
 	
-	<a class="btn btn-default" href="{%url "parse.views.start_parse" %}">Download .xls file</a>
+	<a class="btn btn-default" href="{%url "parse.views.start_parse" %}">Create and Download .xls file</a>
+	<a class="btn btn-default" href="{%static "result_file.xls" %}">Download .xls file</a>
                 
     {% endblock content %}

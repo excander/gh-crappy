@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from .forms import ParseForm
+from django.http import HttpResponse
 
 ##def parse_view(request):
 ##    form = ParseForm()
@@ -29,7 +30,6 @@ def parse_result(request, infield):
     return render(request, 'parse/parse_result.html', {'infield': infield})
 
 def start_parse(request):
-    from django.http import HttpResponse
     from grab import Grab
     from grab.tools.lxml_tools import drop_node
     import xlwt
@@ -63,3 +63,9 @@ def start_parse(request):
 ##    wb.save('parse/grabparser/example.xls')
     wb.save(response)
     return response
+
+
+def download_file(request):
+    f = open('static/result_file.xls', 'rb')
+    return HttpResponse(f, content_type='application/ms-excel')
+    
