@@ -4,3 +4,4 @@ myvenv
 .DS_Store
 info.txt
 db.sqlite3
+parse/grabparser

@@ -27,3 +27,39 @@ def parse_view(request):
 
 def parse_result(request, infield):
     return render(request, 'parse/parse_result.html', {'infield': infield})
+
+def start_parse(request):
+    from django.http import HttpResponse
+    from grab import Grab
+    from grab.tools.lxml_tools import drop_node
+    import xlwt
+    from datetime import datetime
+
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=mymodel.xls'
+
+    url = 'http://zakupki.gov.ru/epz/order/quicksearch/update.html?placeOfSearch=FZ_44&_placeOfSearch=on&placeOfSearch=FZ_223&\
+            _placeOfSearch=on&placeOfSearch=FZ_94&_placeOfSearch=on&priceFrom=0&priceTo=200+000+000+000&publishDateFrom=&\
+            publishDateTo=&updateDateFrom=&updateDateTo=&orderStages=AF&_orderStages=on&orderStages=CA&_orderStages=on&\
+            _orderStages=on&_orderStages=on&sortDirection=false&sortBy=UPDATE_DATE&recordsPerPage=_10&pageNo=1&searchString=&\
+            strictEqual=false&morphology=false&showLotsInfo=false&isPaging=true&isHeaderClick=&checkIds='
+    xpath = '//td[@class="descriptTenderTd"]//dd[a][2]'
+
+    g = Grab()
+    g.go(url)
+    wb = xlwt.Workbook()
+    ws = wb.add_sheet('A Test Sheet')
+
+    style0 = xlwt.easyxf('font: name Times New Roman, color-index red, bold on',
+        num_format_str='#,##0.00')
+    style1 = xlwt.easyxf(num_format_str='D-MMM-YY')
+
+
+    page = g.doc.select(xpath)
+    for i, element in enumerate(page):
+        ws.write(i, 0, i)
+        ws.write(i, 1, element.text())
+
+##    wb.save('parse/grabparser/example.xls')
+    wb.save(response)
+    return response

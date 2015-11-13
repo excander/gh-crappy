@@ -1,10 +1,12 @@
  {% extends "parse/base.html" %}
 
     {% block content %}
-    <h1>Let's try:</h1>
+   	<h1>Let's try:</h1>
         <form method="POST" class="post-form">{% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Start</button>
         </form>
+	
+	<a class="btn btn-default" href="{%url "parse.views.start_parse" %}">Download .xls file</a>
                 
     {% endblock content %}
