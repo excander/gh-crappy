@@ -51,7 +51,7 @@ def today():
 
 
 def handle_uploaded_file(f):
-	with open('parse/input.txt', 'w') as destination:
+	with open(r'parse/input.txt', 'w') as destination:
 		for chunk in f.chunks():
 			destination.write(chunk)
 
