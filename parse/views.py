@@ -1,30 +1,39 @@
+#coding=utf8
 from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from .forms import ParseForm
 from django.http import HttpResponse
+from .mainfunc import download_csv
+from renamer import latinizator
 
 ##def parse_view(request):
 ##    form = ParseForm()
 ##    return render(request, 'parse/parse_view.html', {'form': form})
 
 def parse_view(request):
+    inp_list = ["asd", "qwe"]
     if request.method == "POST":
         form = ParseForm(request.POST)
         if form.is_valid():
             infield = form.cleaned_data['infield']
+            # inp_list = form.cleaned_data['inlist']
+            for i, inp_word in enumerate(inp_list):
+                download_csv(inp_word, i)
+                print "static/" + str(i) + " " + latinizator(inp_word) + ".csv was successfully downloaded"
             if infield.isdigit():
-                f = open("parse/templates/parse/res.html", 'w')
+                f = open("parse/templates/parse/res.html", 'wb')
                 f.write('''{% extends "parse/base.html" %} {% block content %}''')
                 for i in range(int(infield)):
                     f.write("<p>"+str(i)+"</p>")
                 f.write("{% endblock content %}")
-                f.close()
                 return render(request, 'parse/res.html')
             else:
                 return redirect('parse_result', infield=infield)
     else:
-        form = ParseForm()
-    return render(request, 'parse/parse_view.html', {'form': form})
+        data = {'infield': 'hello',
+            'inlist': [u'карандаш', u'светодиод']}
+        form = ParseForm(data)
+    return render(request, 'parse/parse_view.html', {'form': form, 'inlist' : inp_list})
 
 def parse_result(request, infield):
     return render(request, 'parse/parse_result.html', {'infield': infield})
