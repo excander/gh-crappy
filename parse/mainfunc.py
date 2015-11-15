@@ -59,7 +59,7 @@ def handle_uploaded_file(f):
 
 def read_inplist():
     res_line = ''
-    f = open('parse/input.txt', 'rb')
+    f = open(r'parse/input.txt', 'rb')
     for line in f:
         res_line += line
     f.close()
