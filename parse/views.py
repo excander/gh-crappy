@@ -8,7 +8,8 @@ from renamer import latinizator
 import datetime
 
 from .mainfunc import handle_uploaded_file
-from .mainfunc import read_inplist
+from .mainfunc import read_inplist, start
+from .mainfunc import yesterday, today
 
 ##def parse_view(request):
 ##    form = ParseForm()
@@ -52,23 +53,22 @@ def parse_view(request):
             format = "%d.%m.%Y"
             df = (form.cleaned_data['pubdatefrom']).strftime(format)
             dt = (form.cleaned_data['pubdateto']).strftime(format)
-            
+            delta = form.cleaned_data['delta']
         
             if request.FILES:
                 handle_uploaded_file(request.FILES['file'])
 
-            
-
-
-
+            # .split('\n')
+            start(df, dt, delta)
             return redirect('parse_result', infield="thanks")
 
     # if a GET (or any other method) we'll create a blank form
     else:
         data = {
-                    'pubdateto' : datetime.date.today(),
-                    'pubdatefrom' : datetime.date.today(),
-                    'inplist' : read_inplist()
+                    'pubdatefrom' : yesterday(),
+                    'pubdateto' : today(),
+                    'inplist' : read_inplist(),
+                    'delta' : 1,
                 }
         form = ParseForm(data)
     return render(request, 'parse/parse_view.html', {'form': form})
@@ -119,6 +119,8 @@ def start_parse(request):
 
 
 def download_file(request):
-    f = open('static/result_file.xls', 'rb')
-    return HttpResponse(f, content_type='application/ms-excel')
-    
+    try:
+        f = open(r'parse/files/result_file.csv', 'rb')
+        return HttpResponse(f, content_type='application/ms-excel')
+    except (IOError, ValueError):
+        return redirect('parse_result', infield="file not found")
