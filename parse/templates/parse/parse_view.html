@@ -2,16 +2,15 @@
  {% extends "parse/base.html" %}
 	{% load static %}
     {% block content %}
-   	<h1>Let's try:</h1>
-        <form method="POST" class="post-for">{% csrf_token %}
-            {{ form.as_p }}
+        <form method="POST" class="post-for" enctype="multipart/form-data">{% csrf_token %}
+            {{ form.as_p}}
             <button type="submit">Start</button>
             <!-- <textarea name="inplist">{% for l in inlist %}{{ l }}{% endfor %}</textarea> -->
-            <a class="btn btn-default" href="{%static "result_file.xls" %}">Save list</a>
+<!--             <a class="btn btn-default" href="{%static "result_file.xls" %}">Save list</a> -->
         </form>
 	
-	<a class="btn btn-default" href="{%url "parse.views.start_parse" %}">Create and Download .xls file</a>
-	<a class="btn btn-default" href="{%static "result_file.xls" %}">Download .xls file</a>
+<!-- 	<a class="btn btn-default" href="{%url "parse.views.start_parse" %}">Create and Download .xls file</a>
+	<a class="btn btn-default" href="{%static "result_file.xls" %}">Download .xls file</a> -->
 
 
                 

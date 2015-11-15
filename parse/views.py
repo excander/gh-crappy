@@ -4,39 +4,83 @@ from django.shortcuts import redirect
 from .forms import ParseForm
 from django.http import HttpResponse
 from .mainfunc import download_csv
-from renamer import latinizator
+from renamer import latinizator 
+import datetime
+
+from .mainfunc import handle_uploaded_file
+from .mainfunc import read_inplist
 
 ##def parse_view(request):
 ##    form = ParseForm()
 ##    return render(request, 'parse/parse_view.html', {'form': form})
 
+# def parse_view(request):
+#     inp_list = ["asd", "qwe"]
+#     if request.method == "POST":
+#         form = ParseForm(request.POST)
+#         if form.is_valid():
+#             infield = form.cleaned_data['infield']
+#             # inp_list = form.cleaned_data['inlist']
+#             for i, inp_word in enumerate(inp_list):
+#                 download_csv(inp_word, i)
+#                 print "static/" + str(i) + " " + latinizator(inp_word) + ".csv was successfully downloaded"
+#             if infield.isdigit():
+#                 f = open("parse/templates/parse/res.html", 'wb')
+#                 f.write('''{% extends "parse/base.html" %} {% block content %}''')
+#                 for i in range(int(infield)):
+#                     f.write("<p>"+str(i)+"</p>")
+#                 f.write("{% endblock content %}")
+#                 return render(request, 'parse/res.html')
+#             else:
+#                 return redirect('parse_result', infield=infield)
+#     else:
+#         data = {'infield': 'hello',
+#                 'inlist': [u'карандаш', u'светодиод'],
+#                 'pubdatefrom' : datetime.date.today(),
+#                 'pubdateto' : datetime.date.today()}
+#         form = ParseForm(data)
+#     return render(request, 'parse/parse_view.html', {'form': form, 'inlist' : inp_list})
+
+
+
 def parse_view(request):
-    inp_list = ["asd", "qwe"]
-    if request.method == "POST":
-        form = ParseForm(request.POST)
+    if request.method == 'POST':
+        form = ParseForm(request.POST, request.FILES)
         if form.is_valid():
-            infield = form.cleaned_data['infield']
-            # inp_list = form.cleaned_data['inlist']
-            for i, inp_word in enumerate(inp_list):
-                download_csv(inp_word, i)
-                print "static/" + str(i) + " " + latinizator(inp_word) + ".csv was successfully downloaded"
-            if infield.isdigit():
-                f = open("parse/templates/parse/res.html", 'wb')
-                f.write('''{% extends "parse/base.html" %} {% block content %}''')
-                for i in range(int(infield)):
-                    f.write("<p>"+str(i)+"</p>")
-                f.write("{% endblock content %}")
-                return render(request, 'parse/res.html')
-            else:
-                return redirect('parse_result', infield=infield)
+            # process the data in form.cleaned_data as required
+            
+            format = "%d.%m.%Y"
+            df = (form.cleaned_data['pubdatefrom']).strftime(format)
+            dt = (form.cleaned_data['pubdateto']).strftime(format)
+            
+        
+            if request.FILES:
+                handle_uploaded_file(request.FILES['file'])
+
+            
+
+
+
+            return redirect('parse_result', infield="thanks")
+
+    # if a GET (or any other method) we'll create a blank form
     else:
-        data = {'infield': 'hello',
-            'inlist': [u'карандаш', u'светодиод']}
+        data = {
+                    'pubdateto' : datetime.date.today(),
+                    'pubdatefrom' : datetime.date.today(),
+                    'inplist' : read_inplist()
+                }
         form = ParseForm(data)
-    return render(request, 'parse/parse_view.html', {'form': form, 'inlist' : inp_list})
+    return render(request, 'parse/parse_view.html', {'form': form})
+
+
+
 
 def parse_result(request, infield):
     return render(request, 'parse/parse_result.html', {'infield': infield})
+
+
+
 
 def start_parse(request):
     from grab import Grab

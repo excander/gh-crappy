@@ -41,3 +41,19 @@ def download_csv(word, num):
 	g = Grab()
 	g.go(url)
 	g.response.save("static/" + str(num) + " " + latinizator(word) + ".csv")
+
+
+def handle_uploaded_file(f):
+	with open('parse/input.txt', 'w') as destination:
+		for chunk in f.chunks():
+			destination.write(chunk)
+
+
+
+def read_inplist():
+    res_line = ''
+    f = open('parse/input.txt', 'r')
+    for line in f:
+        res_line += line
+    f.close()
+    return unicode(res_line, "utf8")
