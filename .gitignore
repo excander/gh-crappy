@@ -5,4 +5,5 @@ myvenv
 info.txt
 db.sqlite3
 parse/grabparser
-parse/files
+parse/media
+parse/input.txt
