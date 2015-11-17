@@ -17,6 +17,6 @@ class ParseForm(forms.Form):
 	pubdateto = forms.DateField(widget=DateInput)
 	inplist = forms.CharField(widget=forms.Textarea)
 	delta = forms.IntegerField(min_value=0, max_value=1000)
-	file = forms.FileField(required=False)
+	# file = forms.FileField(required=False)
 
 

@@ -68,8 +68,15 @@ def read_inplist():
     return unicode(res_line, "utf8")
 
 
-def start(df, dt, delta):
+def save_inplist(inplist):
+    f = open(path + '/input.txt', 'w')
+    for line in inplist.split("\n"):
+        f.write(line.encode("utf8"))
+    f.close()
+
+
+def start(inplist, df, dt, delta):
 	f = open(path + "/media/result_file.csv", "w")
-	for i, inp_word in enumerate(read_inplist().split('\n')):
+	for i, inp_word in enumerate(inplist.split('\n')):
 		f.write(download_csv(inp_word, df, dt, delta))
 		f.write("\n")

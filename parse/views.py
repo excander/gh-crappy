@@ -9,7 +9,7 @@ import datetime
 import os
 
 from .mainfunc import handle_uploaded_file
-from .mainfunc import read_inplist, start
+from .mainfunc import save_inplist, read_inplist, start
 from .mainfunc import yesterday, today
 
 ##def parse_view(request):
@@ -55,12 +55,14 @@ def parse_view(request):
             df = (form.cleaned_data['pubdatefrom']).strftime(format)
             dt = (form.cleaned_data['pubdateto']).strftime(format)
             delta = form.cleaned_data['delta']
+            inplist = form.cleaned_data['inplist']
         
             if request.FILES:
                 handle_uploaded_file(request.FILES['file'])
 
+            save_inplist(inplist)
             # .split('\n')
-            start(df, dt, delta)
+            start(inplist, df, dt, delta)
             return redirect('parse_result', infield="thanks")
 
     # if a GET (or any other method) we'll create a blank form

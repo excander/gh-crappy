@@ -2,6 +2,10 @@
  {% extends "parse/base.html" %}
 	{% load static %}
     {% block content %}
+        <p class="title">Скачать последний вычисленный файл</p>
+        <p><a class="btn btn-default" href="{% url 'download_file' %}">Download .csv file</a></p>
+        <hr>
+        <p class="title">Изменить настройки и провести вычисления</p>
         <form method="POST" class="post-for" enctype="multipart/form-data">{% csrf_token %}
             {{ form.as_p}}
             <button type="submit">Start</button>
@@ -11,7 +15,7 @@
 	
 	<!-- <a class="btn btn-default" href="{%url "parse.views.start_parse" %}">Create and Download .xls file</a> -->
 	<!-- <a class="btn btn-default" href="{%static "files/result_file.csv" %}">Download .csv file</a> -->
-            <a class="btn btn-default" href="{% url 'download_file' %}">Download .csv file</a> 
+
 
                 
     {% endblock content %}
