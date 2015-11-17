@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from .mainfunc import download_csv
 from renamer import latinizator 
 import datetime
+import os
 
 from .mainfunc import handle_uploaded_file
 from .mainfunc import read_inplist, start
@@ -120,7 +121,8 @@ def start_parse(request):
 
 def download_file(request):
     try:
-        f = open(r'parse/media/result_file.csv', 'rb')
+        path = os.path.abspath(os.path.dirname(__file__))
+        f = open(path + '/media/result_file.csv', 'rb')
         return HttpResponse(f, content_type='application/ms-excel')
     except (IOError, ValueError):
         return redirect('parse_result', infield="file not found")

@@ -1,9 +1,11 @@
 # -*- coding: utf8 -*-
 from grab import Grab
 import urllib
+import os
 import time
 import datetime
 
+path = os.path.abspath(os.path.dirname(__file__))
 
 def download_csv(word,df,dt,sec):
     time.sleep(sec)
@@ -51,7 +53,7 @@ def today():
 
 
 def handle_uploaded_file(f):
-	with open(r'parse/input.txt', 'w') as destination:
+	with open(path +'/input.txt', 'w') as destination:
 		for chunk in f.chunks():
 			destination.write(chunk)
 
@@ -59,7 +61,7 @@ def handle_uploaded_file(f):
 
 def read_inplist():
     res_line = ''
-    f = open(r'parse/input.txt', 'rb')
+    f = open(path + '/input.txt', 'rb')
     for line in f:
         res_line += line
     f.close()
@@ -67,7 +69,7 @@ def read_inplist():
 
 
 def start(df, dt, delta):
-	f = open("parse/media/result_file.csv", "w")
+	f = open(path + "/media/result_file.csv", "w")
 	for i, inp_word in enumerate(read_inplist().split('\n')):
 		f.write(download_csv(inp_word, df, dt, delta))
 		f.write("\n")
