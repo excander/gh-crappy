@@ -63,7 +63,7 @@ def parse_view(request):
             save_inplist(inplist)
             # .split('\n')
             start(inplist, df, dt, delta)
-            return redirect('parse_result', infield="thanks")
+            return redirect('parse_result', infield="Вычисление проведено успешно.")
 
     # if a GET (or any other method) we'll create a blank form
     else:
