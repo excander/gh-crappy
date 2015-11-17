@@ -120,7 +120,7 @@ def start_parse(request):
 
 def download_file(request):
     try:
-        f = open(r'parse/files/result_file.csv', 'rb')
+        f = open(r'parse/media/result_file.csv', 'rb')
         return HttpResponse(f, content_type='application/ms-excel')
     except (IOError, ValueError):
         return redirect('parse_result', infield="file not found")

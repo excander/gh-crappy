@@ -17,7 +17,7 @@ def download_csv(word,df,dt,sec):
     	"&priceFrom=0",
     	"&priceTo=200+000+000+000",
     	"&publishDateFrom=", df,
-    	"&publishDateTo=14.11.2015", dt,
+    	"&publishDateTo=", dt,
     	"&updateDateFrom=",
     	"&updateDateTo=",
     	"&orderStages=AF&_orderStages=on",
@@ -67,7 +67,7 @@ def read_inplist():
 
 
 def start(df, dt, delta):
-	f = open("parse/files/result_file.csv", "w")
+	f = open("parse/media/result_file.csv", "w")
 	for i, inp_word in enumerate(read_inplist().split('\n')):
 		f.write(download_csv(inp_word, df, dt, delta))
 		f.write("\n")
