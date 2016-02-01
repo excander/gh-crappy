@@ -38,7 +38,7 @@ def download_csv(word,df,dt,sec):
     	"&checkIds=",
     	"&quickSearch=true",
     	"&userId=null",
-    	"&conf=true;true;true;true;true;true;true;true;true;true;true;true;true;true;true;true;true;"])
+    	"&conf=true;true;true;true;true;true;true;true;true;true;true;true;true;true;true;true;true;true;"])
 
     g = Grab()
     g.go(url)
