@@ -76,7 +76,60 @@ def save_inplist(inplist):
 
 
 def start(inplist, df, dt, delta):
-	f = open(path + "/media/result_file.csv", "w")
-	for i, inp_word in enumerate(inplist.split('\n')):
-		f.write(download_csv(inp_word, df, dt, delta))
-		f.write("\n")
+    import csv
+    import xlwt, xlrd
+
+    headstyle = xlwt.easyxf('pattern: pattern solid, fore_color gray25; font: color black, bold 1; align: horiz center, wrap 1; border: top thin, right thin, bottom thin, left thin')
+    hyperstyle = xlwt.easyxf('pattern: pattern solid, fore_color white; font: color blue, underline on; border: top no_line')
+    colwidth = [4010, 3726, 8192, 25799, 1649, 2616, 3754, 1450, 3840, 3754, 4323, 6257, 3242, 3157, 3896, 4920, 3384, 3413, 2048]
+
+    f = open(path + "/media/result_file.csv", "w")
+    for i, inp_word in enumerate(inplist.split('\n')):
+        f.write(download_csv(inp_word, df, dt, delta))
+        f.write("\n")
+    f.close()
+
+    with open(path + '/media/result_file.csv', 'rb') as f:
+        wb = xlwt.Workbook(encoding="cp1251")
+        ws = wb.add_sheet('data', cell_overwrite_ok=True)
+        reader = csv.reader(f, delimiter=';')
+        for r, row in enumerate(reader):
+            hrow = False;
+            for c, val in enumerate(row):
+                if (c == 0) and (len(val)==25):
+                    hrow = True
+                if hrow:
+                    ws.write(r, c, val, headstyle)
+                elif (c == 1) and (hrow == False) and (val <> ''):
+                    click = 'http://zakupki.gov.ru/epz/order/quicksearch/search.html?searchString='+ val[1:].decode('cp1251')
+                    ws.write(r, c, xlwt.Formula('HYPERLINK("%s";"%s")' % (click, val.decode(encoding='cp1251'))), hyperstyle)
+                else:
+                    ws.write(r, c, val)
+
+
+        for i in range(19):        
+            ws.col(i).width = colwidth[i]
+        ws.row(0).height_mismatch = True
+        ws.row(0).height = 1140 
+    wb.save(path + '/media/result_file.xls')
+
+    # with open(path + '/media/result_file.csv', 'rb') as f:
+    #     wb = xlwt.Workbook(encoding="cp1251")
+    #     ws = wb.add_sheet('data', cell_overwrite_ok=True)
+    #     reader = csv.reader(f, delimiter=';')
+    #     for r, row in enumerate(reader):
+    #         for c, val in enumerate(row):
+    #             ws.write(r, c, val)
+
+    #     for i in range(19):        
+    #         ws.col(i).width = colwidth[i]
+    #     ws.row(0).height_mismatch = True
+    #     ws.row(0).height = 1140 
+
+    #     headstyle = xlwt.easyxf('pattern: pattern solid, fore_color gray25; font: color black; align: horiz center"')
+        
+
+    # wb.save(path + '/media/result_file.xls')
+
+
+    
