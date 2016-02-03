@@ -63,7 +63,8 @@ def parse_view(request):
             save_inplist(inplist)
             # .split('\n')
             start(inplist, df, dt, delta)
-            return redirect('parse_result', infield="Вычисление проведено успешно.")
+            # return redirect('parse_result', infield="Вычисление проведено успешно.")
+            return redirect('parse_result')
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -125,6 +126,14 @@ def download_file(request):
     try:
         path = os.path.abspath(os.path.dirname(__file__))
         f = open(path + '/media/result_file.csv', 'rb')
+        return HttpResponse(f, content_type='application/ms-excel')
+    except (IOError, ValueError):
+        return redirect('parse_result', infield="file not found")
+
+def download_xls(request):
+    try:
+        path = os.path.abspath(os.path.dirname(__file__))
+        f = open(path + '/media/result_file.xls', 'rb')
         return HttpResponse(f, content_type='application/ms-excel')
     except (IOError, ValueError):
         return redirect('parse_result', infield="file not found")

@@ -4,7 +4,7 @@
     {% block content %}
         <p class="title">Скачать последний вычисленный файл</p>
         <p><a class="btn btn-default" href="{% url 'download_file' %}">Download .csv file</a></p>
-        <p><a class="btn btn-default" href="http://excander.pythonanywhere.com/parse/media/result_file.xls">Download .xls file</a></p>
+        <p><a class="btn btn-default" href="{% url 'download_xls' %}">Download .xls file</a></p>
         <hr>
         <p class="title">Изменить настройки и провести вычисления</p>
         <form method="POST" class="post-for" enctype="multipart/form-data">{% csrf_token %}
